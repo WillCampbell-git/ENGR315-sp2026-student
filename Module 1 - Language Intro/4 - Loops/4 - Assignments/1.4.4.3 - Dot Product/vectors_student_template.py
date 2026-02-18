@@ -23,9 +23,16 @@ vector_b = generate_random_int_list(fixed_length, maximum_value)
 """
 Step 2: Iterate through the vector(s) and calculate the dot product
 """
+dot_product = 0
+count = 0
+for i in vector_a:
+    dot_product += i * vector_b[count]
+    count += 1
+    
+
 
 # store your result here. Do not change the name
-dot_product = 0
+
 
 ### Your code here
 

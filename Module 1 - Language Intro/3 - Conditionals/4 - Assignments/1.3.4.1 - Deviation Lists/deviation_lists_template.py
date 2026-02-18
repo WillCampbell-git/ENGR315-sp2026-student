@@ -42,4 +42,5 @@ else:
 
     longest_list_is = random_list_A
 
+print(longest_list_is)
 ### YOUR CODE HERE

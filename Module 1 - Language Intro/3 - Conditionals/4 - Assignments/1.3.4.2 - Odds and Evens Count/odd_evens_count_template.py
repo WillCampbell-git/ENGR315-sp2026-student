@@ -29,3 +29,9 @@ num_evens = 0
 num_odds = 0
 
 ### YOUR CODE BEGINS HERE ###
+
+for i in nums:
+    if i % 2 == 1:
+        num_odds += 1
+    elif i % 2 == 0:
+        num_evens += 1
