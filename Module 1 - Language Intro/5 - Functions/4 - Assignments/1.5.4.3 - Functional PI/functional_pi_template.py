@@ -10,7 +10,25 @@ def my_pi(target_error):
     """
 
     ### YOUR CODE HERE ###
+    a = 1.0
+    b = 1.0 / (2 ** (1/2))
+    t = 0.25
+    p = 1.0
 
+    while True:
+        A = a
+        B = b
+        P = p
+        T = t
+        a = (a + B)/2
+        b = (A * b)**(1/2)
+        p = 2 * p
+        t = t - P * (a - A)**2
+        pi_new = ((a+b)**2)/(4 * t)
+        pi_old = ((A+B)**2)/(4 * T)
+
+        if abs(pi_new - pi_old) < target_error:
+            return pi_new
     # change this so an actual value is returned
     return 0
 
