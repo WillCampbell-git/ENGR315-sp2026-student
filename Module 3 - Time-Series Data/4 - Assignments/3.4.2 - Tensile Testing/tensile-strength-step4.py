@@ -3,6 +3,7 @@ import os
 import math
 import sys
 
+ultimate_tensile_strength = -1
 
 def parse_tensile_file(path_to_file):
     file = open(path_to_file)
@@ -67,7 +68,7 @@ def calculate_stress(force, sample_diameter):
     ### your code here ###
 
     # delete this line and replace it with your own
-    stress = force/cross_sectional_area
+    stress = (1000*force)/cross_sectional_area
 
     return stress
 
