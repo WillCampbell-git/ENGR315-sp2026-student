@@ -67,6 +67,21 @@ def first_question(data):
     """
 
     # your code here
+    first_date_rockingham = "Not Found"
+    first_date_harrisonburg = "Not Found"
+    x=0
+    y=0
+    for (date,county, state, fips, cases, deaths) in data:
+        if county == "Rockingham" and state == "Virginia" and x == 0:
+            first_date_rockingham = date
+            x += 1
+    for (date,county, state, fips, cases, deaths) in data:
+        if county == "Harrisonburg city" and state == "Virginia" and y == 0:
+            first_date_harrisonburg = date
+            y += 1
+    print("First case in Rockingham county was", first_date_rockingham)
+    print("First case in Harrisonburg city was", first_date_harrisonburg)
+        
     return
 
 def second_question(data):
@@ -78,6 +93,28 @@ def second_question(data):
     """
 
     # your code here
+    new_harrisonburg_cases = 0
+    new_rockingham_cases = 0
+    total_harrisonburg_cases = 0
+    total_rockingham_cases = 0
+    date_of_most_cases_harrisonburg = " "
+    date_of_most_cases_rockingham = " "
+    for (date,county, state, fips, cases, deaths) in data:
+        if county == "Harrisonburg city" and state == "Virginia":
+            difference1 = cases - total_harrisonburg_cases
+            if difference1 > new_harrisonburg_cases:
+                new_harrisonburg_cases = difference1
+                date_of_most_cases_harrisonburg = date
+            total_harrisonburg_cases = cases
+    print("Most daily cases recorded in Harrisonburg was", new_harrisonburg_cases, "on", date_of_most_cases_harrisonburg)
+    for (date,county, state, fips, cases, deaths) in data:
+        if county == "Rockingham" and state == "Virginia":
+            difference2 = cases - total_rockingham_cases
+            if difference2 > new_rockingham_cases:
+                new_rockingham_cases = difference2
+                date_of_most_cases_rockingham = date
+            total_rockingham_cases = cases
+    print("Most daily cases recorded in Rockingham was", new_rockingham_cases, "on", date_of_most_cases_rockingham)
     return
 
 def third_question(data):
@@ -89,13 +126,66 @@ def third_question(data):
     """
     
     # your code here
+    # to keep track of the worst span
+    harrisonburg_worst_span = 0
+    rockingham_worst_span = 0
+    # lists for dates in span
+    harrisonburg_dates_span = []
+    rockingham_dates_span = []
+    # lists for new cases in span
+    harrisonburg_new_cases_span = []
+    rockingham_new_cases_span = []
+    # track start and end dates of span
+    harrisonburg_start_date = " "
+    harrisonburg_end_date = " "
+    rockingham_start_date = " "
+    rockingham_end_date = " "
+    # total cases to keep track of new cases
+    total_harrisonburg_cases = 0
+    total_rockingham_cases = 0
+    # For Loop, if statement to append dates when list < 7 days long.
+    for (date,county, state, fips, cases, deaths) in data:
+        if county == "Harrisonburg city" and state == "Virginia":
+            difference = cases - total_harrisonburg_cases
+            total_harrisonburg_cases = cases
+            if len(harrisonburg_new_cases_span) < 7:
+                harrisonburg_new_cases_span.append(difference)
+                harrisonburg_dates_span.append(date)
+            else:
+                harrisonburg_new_cases_span = harrisonburg_new_cases_span[1:]
+                harrisonburg_new_cases_span.append(difference)
+                harrisonburg_dates_span = harrisonburg_dates_span[1:]
+                harrisonburg_dates_span.append(date)
+            if sum(harrisonburg_new_cases_span) > harrisonburg_worst_span:
+                harrisonburg_worst_span = sum(harrisonburg_new_cases_span)
+                harrisonburg_start_date = harrisonburg_dates_span[0]
+                harrisonburg_end_date = harrisonburg_dates_span[-1]
+    print("The worst seven day period in Harrisonburg city resulted in", harrisonburg_worst_span, "new cases, which started on", harrisonburg_start_date, "and ended on", harrisonburg_end_date)
+    for (date,county, state, fips, cases, deaths) in data:
+        if county == "Rockingham" and state == "Virginia":
+            difference = cases - total_rockingham_cases
+            total_rockingham_cases = cases
+            if len(rockingham_new_cases_span) < 7:
+                rockingham_new_cases_span.append(difference)
+                rockingham_dates_span.append(date)
+            else:
+                rockingham_new_cases_span = rockingham_new_cases_span[1:]
+                rockingham_new_cases_span.append(difference)
+                rockingham_dates_span = rockingham_dates_span[1:]
+                rockingham_dates_span.append(date)
+            if sum(rockingham_new_cases_span) > rockingham_worst_span:
+                rockingham_worst_span = sum(rockingham_new_cases_span)
+                rockingham_start_date = rockingham_dates_span[0]
+                rockingham_end_date = rockingham_dates_span[-1]
+    print("The worst seven day period in Rockingham resulted in", rockingham_worst_span, "new cases, which started on", rockingham_start_date, "and ended on", rockingham_end_date)
+
     return
 
 if __name__ == "__main__":
-    data = parse_nyt_data('us-counties.csv')
+    data = parse_nyt_data(r'C:\Users\willi\Desktop\ENGR 315\ENGR315-sp2026-student\data\covid\us-counties.csv')
 
-    for (date,county, state, fips, cases, deaths) in data:
-        print('On ', date, ' in ', county, ' ', state, ' there were ', cases, ' cases and ', deaths, ' deaths')
+    #for (date,county, state, fips, cases, deaths) in data:
+        #print('On ', date, ' in ', county, ' ', state, ' there were ', cases, ' cases and ', deaths, ' deaths')
 
 
     # write code to address the following question: Use print() to display your responses.
