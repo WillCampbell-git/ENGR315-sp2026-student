@@ -35,6 +35,35 @@ def one_sample_tests(_files: list, _mean: float, _alpha: float, _less_than: bool
     reject_null_hypothesis = []
 
     # YOUR CODE HERE #
+    for fname in _files:
+        try:
+            # load data from file
+            data = np.loadtxt(fname)
+        except Exception as e:
+            print(f"Error loading {fname}: {e}")
+            continue
+
+        # perform two-sided t-test
+        t_stat, p_value = ttest_1samp(data, _mean)
+
+        # convert to one-sided p-value
+        if _less_than:
+            # left-tailed test: mean < _mean
+            if t_stat < 0:
+                p_value /= 2
+            else:
+                p_value = 1 - (p_value / 2)
+        else:
+            # right-tailed test: mean > _mean
+            if t_stat > 0:
+                p_value /= 2
+            else:
+                p_value = 1 - (p_value / 2)
+
+        # reject null hypothesis if p-value < alpha
+        if p_value < _alpha:
+            reject_null_hypothesis.append(fname)
+    
 
     # return samples that were rejected
     return reject_null_hypothesis
