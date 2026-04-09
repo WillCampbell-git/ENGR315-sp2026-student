@@ -35,6 +35,29 @@ def one_sided_tests(_files: list, _mean: float, _alpha: float, _less_than: bool)
     reject_null_hypothesis = []
 
     # YOUR CODE HERE #
+    for file in _files:
+        try:
+            # load data from file
+            data = np.loadtxt(file)
+        except Exception as e:
+            print(f"Error reading {file}: {e}")
+            continue
+
+        # perform one-sample t-test (two-sided by default)
+        t_stat, p_value = ttest_1samp(data, _mean)
+
+        # convert to one-sided p-value
+        p_value_one_sided = p_value / 2
+
+        # decide rejection based on direction
+        if _less_than:
+            # left-sided test: mean < _mean
+            if t_stat < 0 and p_value_one_sided < _alpha:
+                reject_null_hypothesis.append(file)
+        else:
+            # right-sided test: mean > _mean
+            if t_stat > 0 and p_value_one_sided < _alpha:
+                reject_null_hypothesis.append(file)
 
     # return samples that were rejected
     return reject_null_hypothesis
